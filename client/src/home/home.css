@@ -1,0 +1,16 @@
+.home-article{
+    display: flex;
+    width: 100vw; 
+    align-items: center;
+    justify-content: center; 
+}
+
+.home-wrapper {
+    padding: 1em;
+    margin: 0px;
+    text-align: center;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}

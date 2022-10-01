@@ -1,0 +1,27 @@
+@import url('https://fonts.googleapis.com/css?family=Fira+Mono:400');
+
+.error-article{ 
+    display: flex;
+    width: 100vw; 
+    align-items: center;
+    justify-content: center; 
+}
+
+.error-article .error-text{ 
+    font-family: 'Fira Mono', monospace; 
+    font-size: 2rem;  
+    margin: 0; 
+} 
+
+@media (min-width: 48em) {
+    .error-article .error-text{
+        font-size: 2.5rem;  
+    }
+}
+
+@media (min-width: 64em) {
+    .error-article .error-text{
+        font-size: 3rem; 
+        font-weight: 700;
+    }
+} 
