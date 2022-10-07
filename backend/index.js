@@ -15,7 +15,7 @@ app.use(upload({
 app.post("/upload-video", uploadVideo);
 function uploadVideo(req, res){
     const file = req.files.file;
-    const filepath = "./media/video/";
+    const filepath = "./media/";
     const new_file_name = uuidv4();
     const file_type = ".mp4";
     const new_file_path = `${filepath}${new_file_name}/${new_file_name}${file_type}`;
