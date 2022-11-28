@@ -9,7 +9,7 @@ The aim of this project is simple, Give a phrase to a user and have them repeat 
 ## High-Level Architecture
 ![High-Level Architecture](https://user-images.githubusercontent.com/29023819/204177209-ae191d13-9f39-46ae-88af-e55ddbfdf47e.png)
 
-Thanks for openai for making [whisper](https://github.com/openai/whisper) an automatic speech recognition system making this project possible.
+Thanks to OpenAI for making [whisper](https://github.com/openai/whisper) an automatic speech recognition system making this project possible.
 
 ## Contributing
-We appreciate any help you're willing to give - whether it's fixing bugs, improving documentation, or suggesting new features.
+We appreciate any help you can give - whether it's fixing bugs, improving documentation, or suggesting new features.
