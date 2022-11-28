@@ -1,6 +1,6 @@
 # Learn A Language Through Speech
 
-The aim of this project is simple, Give a phrase to a user and have him or her reapeat in audio form in the users choosen language to test if their pronunciation is correct.
+The aim of this project is simple, Give a phrase to a user and have them repeat it in audio form, where the user chooses the language to improve their pronunciation skills.
 
 ## Client
 ![Speech-Client](https://user-images.githubusercontent.com/29023819/204177122-71ad3eb7-6aad-434b-ac78-f75a4534e71e.png)
