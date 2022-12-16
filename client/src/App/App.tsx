@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import './App.css';
 
-function App() {  
+export default function App() {  
   useEffect(() => {
       document.title = "Page not found";
   });
@@ -11,5 +11,3 @@ function App() {
     </div>
   )
 }
-
-export default App;
