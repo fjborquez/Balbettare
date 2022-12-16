@@ -25,15 +25,35 @@ export default function App() {
     data: ""
   }); 
 
+  const [phrase, setPhrase] = useState({ 
+    available: false,
+    sayPhrase: "",
+    translatedPhrase: ""
+  }); 
+  
   const chunks = useRef([]);
 
   function getAccess() {
     navigator.mediaDevices
       .getUserMedia({ audio: true })
-      .then((mic) => {
+      .then(async (mic) => {
         let  mediaRecorder = new MediaRecorder(mic, {
             mimeType: "audio/webm"
         });
+
+      await axios({ 
+        url: `${env.BACKEND_URL_HOST}/say-phrase`,
+        method: 'GET'
+      }).then((result) => {
+          console.log(result);
+          setPhrase({ 
+            available: true,
+            sayPhrase: result.data.phrase,
+            translatedPhrase: result.data.transplatedPhrase
+          })
+      }).catch((error) => {
+          console.log(error);
+      });
 
         const track = mediaRecorder.stream.getTracks()[0];
         track.onended = () => console.log("ended");
@@ -95,36 +115,43 @@ export default function App() {
         setStream({ ...stream, error });
       });
   } 
-  
-  return (
-    <div className="App">
-      {stream.access ? (
-        <div className="audio-container"> 
-        
-          {!recording.active ?  
-            <input type={"button"} 
-              onClick={() => !recording.active && stream.recorder.start()}  
-              value="Start Recording" /> 
-          : 
-            <input type={"button"} 
-              onClick={() => stream.recorder.stop()}  
-              value="Stop Recording" />
-          }
 
-          {recording.available && <audio controls src={recording.url} />}
-          {
-            transcription.available 
-            && 
-            <div> 
-              <p>{transcription.data}</p> 
-            </div>
-          }
-        </div>
-      ) : (
-        <input type={"button"} 
-          onClick={getAccess} 
-          value="Get Mic Access" />
-      )}
+ 
+  return (
+    <div className="App"> 
+      {stream.access ? (
+          <div className="audio-container">  
+            <p>{phrase.sayPhrase}</p>
+
+            {!recording.active ?  
+              <input type={"button"} 
+                onClick={() => !recording.active && stream.recorder.start()}  
+                value="Start Recording" /> 
+            : 
+              <input type={"button"} 
+                onClick={() => stream.recorder.stop()}  
+                value="Stop Recording" />
+            }
+            
+            {
+              transcription.available  
+              &&  
+              <div>
+                <p>
+                  {transcription.data}
+                </p>
+                <input 
+                  type={"button"}
+                  value="Next"
+                />
+              </div>
+            } 
+          </div>
+        ) : (
+          <input type={"button"} 
+            onClick={getAccess} 
+            value="Get Mic Access" />
+        )}
     </div>
   );
 } 

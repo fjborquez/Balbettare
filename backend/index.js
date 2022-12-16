@@ -53,6 +53,16 @@ async function transcribeAudio() {
     }); 
 }
 
+
+app.get("/say-phrase", sayPhrase);
+async function sayPhrase(req, res) {
+    res.json({
+        phrase: "Buonasera, signora Marchi!",
+        translatedPhrase: "Good evening, Mrs. Marchi!"
+    });
+}
+
+
 app.get("*", function(req, res){
     res.status(404).redirect("/");
 });  
