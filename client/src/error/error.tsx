@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import './error.css';
 
-function Error() { 
+export default function Error() { 
     useEffect(() => {
         document.title = "Page not found";
     });
@@ -13,5 +13,3 @@ function Error() {
         </article>
     )
 }
-
-export default Error;

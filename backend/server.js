@@ -12,12 +12,12 @@ app.use(upload({
   limits: { fileSize: 1024 * 1024 * 1024 * 1 },
 }));
 
-app.post("/upload-video", uploadVideo);
-function uploadVideo(req, res){
+app.post("/upload-audio", uploadAudio);
+function uploadAudio(req, res){
     const file = req.files.file;
     const filepath = "./media/";
     const new_file_name = uuidv4();
-    const file_type = ".mp4";
+    const file_type = ".webm";
     const new_file_path = `${filepath}${new_file_name}/${new_file_name}${file_type}`;
     if (!FileSystem.existsSync(`${filepath}${new_file_name}/`)){
         FileSystem.mkdirSync(`${filepath}${new_file_name}/`);
@@ -25,22 +25,44 @@ function uploadVideo(req, res){
     file.mv(new_file_path, async function(err){
         if (err) { 
             console.log("error-has-accured");
-            res.json("error-has-accured");
+            res.json({
+                status : "error-has-accured"
+            }); 
         } else { 
             console.log("no-error-has-accured"); 
-            res.json("no-error-has-accured");
-            createSubtitles(new_file_path)
+            const transcription = await transcribeAudio();
+            res.json({
+                status : "no-error-has-accured",
+                transcription: transcription
+            }); 
         }
     });
 }
 
-function createSubtitles(file_path) {
-    console.time();
-    const whisper = spawn('ipython',["whisper.ipynb", file_path]);
-    whisper.stdout.on('data', (data) => {
-        console.log(data.toString());
-        console.timeEnd();
-    });    
+async function transcribeAudio() { 
+    return await new Promise((res, rej) => { 
+        const child = spawn('python',["speech-to-text.py"]);
+        let transcription;
+        child.stdout.on('data', (data) => { 
+            transcription = data.toString()
+        });    
+        child.stdout.on('end', function() { 
+            console.log('end');  
+            res(transcription);
+        });   
+    }); 
+}
+
+app.get("/say-phrase", sayPhrase);
+async function sayPhrase(req, res) {
+    const phrases = [
+        {
+            phrase: "Buonasera, signora Marchi!",
+            translatedPhrase: "Good evening, Mrs. Marchi!"
+        }
+    ]
+    const random = Math.floor(Math.random() * phrases.length);  
+    res.json(phrases[random]);
 }
 
 app.get("*", function(req, res){
