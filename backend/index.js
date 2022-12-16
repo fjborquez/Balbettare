@@ -2,7 +2,6 @@
 const FileSystem = require("fs");
 const express = require("express");
 const upload = require("express-fileupload");
-const spawn = require("child_process").spawn;
 const { v4: uuidv4 } = require("uuid");
 const cors = require('cors');
 require("dotenv").config();
@@ -12,12 +11,12 @@ app.use(upload({
   limits: { fileSize: 1024 * 1024 * 1024 * 1 },
 }));
 
-app.post("/upload-video", uploadVideo);
-function uploadVideo(req, res){
+app.post("/upload-audio", uploadAudio);
+function uploadAudio(req, res){
     const file = req.files.file;
     const filepath = "./media/";
     const new_file_name = uuidv4();
-    const file_type = ".mp4";
+    const file_type = ".webm";
     const new_file_path = `${filepath}${new_file_name}/${new_file_name}${file_type}`;
     if (!FileSystem.existsSync(`${filepath}${new_file_name}/`)){
         FileSystem.mkdirSync(`${filepath}${new_file_name}/`);
@@ -28,19 +27,9 @@ function uploadVideo(req, res){
             res.json("error-has-accured");
         } else { 
             console.log("no-error-has-accured"); 
-            res.json("no-error-has-accured");
-            createSubtitles(new_file_path)
+            res.json("no-error-has-accured"); 
         }
     });
-}
-
-function createSubtitles(file_path) {
-    console.time();
-    const whisper = spawn('ipython',["whisper.ipynb", file_path]);
-    whisper.stdout.on('data', (data) => {
-        console.log(data.toString());
-        console.timeEnd();
-    });    
 }
 
 app.get("*", function(req, res){

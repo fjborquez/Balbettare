@@ -1,4 +1,6 @@
 import React, { useEffect, useState, useRef } from 'react';
+import env from '../env.json';
+import axios from 'axios';
 import './App.css';
 
 export default function App() {  
@@ -47,8 +49,24 @@ export default function App() {
         mediaRecorder.onstop = async function () {
           console.log("stopped");
 
-          const url = URL.createObjectURL(chunks.current[0]);
-          chunks.current = [];
+          
+            let blob = new Blob(chunks.current, { type : chunks.current[0] });
+            chunks.current = [];
+
+            const url = URL.createObjectURL(blob);  
+
+            const formData = new FormData(); 
+            formData.append("file", blob); 
+            
+            await axios({ 
+                url: `${env.BACKEND_URL_HOST}/upload-audio`,
+                method: 'POST',
+                data: formData
+            }).then((result) => {
+                console.log(result);
+            }).catch((error) => {
+                console.log(error);
+            });
 
           setRecording({
             active: false,
