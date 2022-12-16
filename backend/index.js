@@ -56,10 +56,14 @@ async function transcribeAudio() {
 
 app.get("/say-phrase", sayPhrase);
 async function sayPhrase(req, res) {
-    res.json({
-        phrase: "Buonasera, signora Marchi!",
-        translatedPhrase: "Good evening, Mrs. Marchi!"
-    });
+    const phrases = [
+        {
+            phrase: "Buonasera, signora Marchi!",
+            translatedPhrase: "Good evening, Mrs. Marchi!"
+        }
+    ]
+    const random = Math.floor(Math.random() * phrases.length);  
+    res.json(phrases[random]);
 }
 
 
