@@ -2,6 +2,7 @@
 const FileSystem = require("fs");
 const express = require("express");
 const upload = require("express-fileupload");
+const spawn = require("child_process").spawn;
 const { v4: uuidv4 } = require("uuid");
 const cors = require('cors');
 require("dotenv").config();
@@ -24,12 +25,32 @@ function uploadAudio(req, res){
     file.mv(new_file_path, async function(err){
         if (err) { 
             console.log("error-has-accured");
-            res.json("error-has-accured");
+            res.json({
+                status : "error-has-accured"
+            }); 
         } else { 
             console.log("no-error-has-accured"); 
-            res.json("no-error-has-accured"); 
+            const transcription = await transcribeAudio();
+            res.json({
+                status : "no-error-has-accured",
+                transcription: transcription
+            }); 
         }
     });
+}
+
+async function transcribeAudio() { 
+    return await new Promise((res, rej) => { 
+        const child = spawn('python',["speech-to-text.py"]);
+        let transcription;
+        child.stdout.on('data', (data) => { 
+            transcription = data.toString()
+        });    
+        child.stdout.on('end', function() { 
+            console.log('end');  
+            res(transcription);
+        });   
+    }); 
 }
 
 app.get("*", function(req, res){

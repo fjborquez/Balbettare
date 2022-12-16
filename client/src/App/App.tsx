@@ -20,6 +20,11 @@ export default function App() {
     url: ""
   });
 
+  const [transcription, setTranscription] = useState({ 
+    available: false,
+    data: ""
+  }); 
+
   const chunks = useRef([]);
 
   function getAccess() {
@@ -64,6 +69,10 @@ export default function App() {
                 data: formData
             }).then((result) => {
                 console.log(result);
+                setTranscription({ 
+                  available: true,
+                  data: result.data.transcription
+                })
             }).catch((error) => {
                 console.log(error);
             });
@@ -103,6 +112,13 @@ export default function App() {
           }
 
           {recording.available && <audio controls src={recording.url} />}
+          {
+            transcription.available 
+            && 
+            <div> 
+              <p>{transcription.data}</p> 
+            </div>
+          }
         </div>
       ) : (
         <input type={"button"} 
