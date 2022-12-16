@@ -53,7 +53,6 @@ async function transcribeAudio() {
     }); 
 }
 
-
 app.get("/say-phrase", sayPhrase);
 async function sayPhrase(req, res) {
     const phrases = [
@@ -65,7 +64,6 @@ async function sayPhrase(req, res) {
     const random = Math.floor(Math.random() * phrases.length);  
     res.json(phrases[random]);
 }
-
 
 app.get("*", function(req, res){
     res.status(404).redirect("/");
