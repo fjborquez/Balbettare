@@ -41,19 +41,7 @@ export default function App() {
             mimeType: "audio/webm"
         });
 
-      await axios({ 
-        url: `${env.BACKEND_URL_HOST}/say-phrase`,
-        method: 'GET'
-      }).then((result) => {
-          console.log(result);
-          setPhrase({ 
-            available: true,
-            sayPhrase: result.data.phrase,
-            translatedPhrase: result.data.transplatedPhrase
-          })
-      }).catch((error) => {
-          console.log(error);
-      });
+        await updateSayPhrase()
 
         const track = mediaRecorder.stream.getTracks()[0];
         track.onended = () => console.log("ended");
@@ -64,6 +52,7 @@ export default function App() {
             available: false,
             url: ""
           });
+          cleanTranscription();
         };
 
         mediaRecorder.ondataavailable = function (e) {
@@ -72,8 +61,7 @@ export default function App() {
         };
 
         mediaRecorder.onstop = async function () {
-          console.log("stopped");
-
+          console.log("stopped"); 
           
             let blob = new Blob(chunks.current, { type : chunks.current[0] });
             chunks.current = [];
@@ -117,36 +105,65 @@ export default function App() {
   } 
 
  
+  async function updateSayPhrase() {
+    await axios({ 
+      url: `${env.BACKEND_URL_HOST}/say-phrase`,
+      method: 'GET'
+    }).then((result) => {
+        console.log(result);
+        setPhrase({ 
+          available: true,
+          sayPhrase: result.data.phrase,
+          translatedPhrase: result.data.transplatedPhrase
+        })
+    }).catch((error) => {
+        console.log(error);
+    });
+    cleanTranscription();
+  }
+
+  function cleanTranscription() { 
+    setTranscription({ 
+      available: false,
+      data: ""
+    });
+  }
+
   return (
     <div className="App"> 
       {stream.access ? (
-          <div className="audio-container">  
-            <p>{phrase.sayPhrase}</p>
+          <section className="audio-container">   
+            <section>
+              {!recording.active ?  
+                <input type={"button"} 
+                  onClick={() => !recording.active && stream.recorder.start()}  
+                  value="Start Recording" /> 
+              : 
+                <input type={"button"} 
+                  onClick={() => stream.recorder.stop()}  
+                  value="Stop Recording" />
+              }
 
-            {!recording.active ?  
-              <input type={"button"} 
-                onClick={() => !recording.active && stream.recorder.start()}  
-                value="Start Recording" /> 
-            : 
-              <input type={"button"} 
-                onClick={() => stream.recorder.stop()}  
-                value="Stop Recording" />
-            }
+              <p>{phrase.sayPhrase}</p>
+            </section> 
+             
             
             {
-              transcription.available  
-              &&  
-              <div>
-                <p>
-                  {transcription.data}
-                </p>
-                <input 
-                  type={"button"}
-                  value="Next"
-                />
-              </div>
-            } 
-          </div>
+                transcription.available  
+                &&  
+                <section>
+                  <p>
+                    {transcription.data}
+                  </p>
+                  <input 
+                    type={"button"}
+                    onClick={updateSayPhrase} 
+                    value="Next"
+                  />
+                </section>
+              } 
+
+          </section> 
         ) : (
           <input type={"button"} 
             onClick={getAccess} 
