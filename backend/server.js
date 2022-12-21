@@ -59,6 +59,9 @@ async function sayPhrase(req, res) {
         {
             phrase: "Buonasera, signora Marchi!",
             translatedPhrase: "Good evening, Mrs. Marchi!"
+        },{
+            phrase: "Piacere!",
+            translatedPhrase: "Pleased to meet you!"
         }
     ]
     const random = Math.floor(Math.random() * phrases.length);  
