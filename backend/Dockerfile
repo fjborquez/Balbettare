@@ -1,4 +1,4 @@
-FROM node:19
+FROM nikolaik/python-nodejs:latest
 
 WORKDIR /backend
 
