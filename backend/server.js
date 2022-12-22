@@ -5,6 +5,7 @@ const upload = require("express-fileupload");
 const spawn = require("child_process").spawn;
 const { v4: uuidv4 } = require("uuid");
 const cors = require('cors');
+const { client } = require("./database/dbConfig");
 require("dotenv").config();
 const app = express();
 app.use(cors())
@@ -53,19 +54,26 @@ async function transcribeAudio() {
     }); 
 }
 
+const data = {
+    phrases: undefined
+}
+
+async function getPhrases() { 
+    client.connect();
+    const phrases = await client.query("SELECT * FROM phrases")
+    client.end();
+    return data.phrases = phrases.rows; 
+}
+
 app.get("/say-phrase", sayPhrase);
 async function sayPhrase(req, res) {
-    const phrases = [
-        {
-            phrase: "Buonasera, signora Marchi!",
-            translatedPhrase: "Good evening, Mrs. Marchi!"
-        },{
-            phrase: "Piacere!",
-            translatedPhrase: "Pleased to meet you!"
-        }
-    ]
-    const random = Math.floor(Math.random() * phrases.length);  
-    res.json(phrases[random]);
+    if (data.phrases === undefined) {await getPhrases()}; 
+    const random = Math.floor(Math.random() * data.phrases.length);  
+    const phrase = data.phrases[random];
+    res.json({
+        phrase: phrase.italian,
+        translatedPhrase: phrase.english
+    });  
 }
 
 app.get("*", function(req, res){
