@@ -1,0 +1,28 @@
+version: "3.9"
+services:
+  server: 
+    build: backend/.
+    ports:
+      - "4000:4000"
+    env_file: backend/.env
+    depends_on: 
+      - db
+  client: 
+    build: client/.
+    ports:
+      - "3000:3000"
+  db:
+    image: postgres
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: speech_recognition
+    ports:
+      - "5432:5432" 
+    volumes:
+      - db-data:/var/lib/postgresql/data
+      - ./backend/database/init.sql:/docker-entrypoint-initdb.d/init.sql
+
+volumes: 
+  db-data:
+  
