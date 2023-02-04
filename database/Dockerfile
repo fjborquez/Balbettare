@@ -1,6 +1,6 @@
-FROM nikolaik/python-nodejs:latest
+FROM node:16
 
-WORKDIR /backend
+WORKDIR /database
 
 COPY package*.json ./
 RUN npm install
@@ -9,5 +9,5 @@ ENV DB_HOST db
 
 COPY . . 
 
-EXPOSE 4000
+EXPOSE 5000
 CMD [ "npm", "start" ]
