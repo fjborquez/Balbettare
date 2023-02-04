@@ -9,5 +9,5 @@ ENV DB_HOST db
 
 COPY . . 
 
-EXPOSE 5000
+EXPOSE 4000
 CMD [ "npm", "start" ]
