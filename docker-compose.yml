@@ -22,7 +22,11 @@ services:
     volumes:
       - db-data:/var/lib/postgresql/data
       - ./database/postgresql/init.sql:/docker-entrypoint-initdb.d/init.sql
-
+  python: 
+    build: python/.
+    ports:
+      - "4010:4010"
+      
 volumes: 
   db-data:
   
