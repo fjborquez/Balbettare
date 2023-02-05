@@ -1,10 +1,12 @@
 "use strict";
 const FileSystem = require("fs");
 const express = require("express"); 
-const { client } = require("./postgresql/dbConfig");
+const { client } = require("./dbConfig");
+const cors = require('cors');
 require("dotenv").config();
 const app = express(); 
- 
+app.use(cors())
+
 const data = {
     phrases: undefined
 }
