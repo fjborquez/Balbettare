@@ -1,8 +1,9 @@
-CREATE TABLE phrases (
-    id BIGSERIAL PRIMARY KEY NOT NULL, 
-    english VARCHAR(200) NOT NULL, 
-    italian VARCHAR(200) NOT NULL
+CREATE TABLE Italian_Phrases (
+    Phrase_id BIGSERIAL NOT NULL, 
+    Italian_Phrase VARCHAR(255) NOT NULL, 
+    English_Translation VARCHAR(255) NOT NULL,
+    PRIMARY KEY (Phrase_id)
 );
 
-INSERT INTO phrases (english, italian) VALUES ('Good evening, Mrs. Marchi!', 'Buonasera, signora Marchi!');
-INSERT INTO phrases (english, italian) VALUES ('Pleased to meet you!', 'Piacere!');
+INSERT INTO Italian_Phrases (Italian_Phrase, English_Translation) VALUES ('Buonasera, signora Marchi!', 'Good evening, Mrs. Marchi!');
+INSERT INTO Italian_Phrases (Italian_Phrase, English_Translation) VALUES ('Piacere!', 'Pleased to meet you!');

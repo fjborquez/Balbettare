@@ -1,31 +1,31 @@
 "use strict";
 const FileSystem = require("fs");
 const express = require("express"); 
-const { client } = require("./dbConfig");
+const { client } = require("./postgresql/dbConfig");
+
 const cors = require('cors');
 require("dotenv").config();
+
 const app = express(); 
 app.use(cors())
 
-const data = {
-    phrases: undefined
-}
+let Italian_Phrases = undefined;
 
-async function getPhrases() { 
-    client.connect();
-    const phrases = await client.query("SELECT * FROM phrases")
-    client.end();
-    return data.phrases = phrases.rows; 
-}
+app.get("/italianPhrase", italianPhrase);
+async function italianPhrase(req, res) {  
+    if (Italian_Phrases == undefined) {
+        client.connect();
+        const data = await client.query("SELECT * FROM Italian_Phrases")
+        client.end();
+        Italian_Phrases = data.rows;
+    }  
 
-app.get("/say-phrase", sayPhrase);
-async function sayPhrase(req, res) {
-    if (data.phrases === undefined) {await getPhrases()}; 
-    const random = Math.floor(Math.random() * data.phrases.length);  
-    const phrase = data.phrases[random];
+    const random = Math.floor(Math.random() * Italian_Phrases.length);  
+    const phrase = Italian_Phrases[random];
+
     res.json({
-        phrase: phrase.italian,
-        translatedPhrase: phrase.english
+        phrase: phrase.italian_phrase,
+        translatedPhrase: phrase.english_translation
     });  
 }
 
