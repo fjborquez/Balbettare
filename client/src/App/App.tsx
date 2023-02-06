@@ -72,7 +72,7 @@ export default function App() {
             formData.append("file", blob); 
             
             await axios({ 
-                url: `${env.BACKEND_URL_HOST}/upload-audio`,
+                url: `${env.PYTHON_URL_HOST}/${env.PYTHON_MEDIA_TRANSCRIPTIOM}`,
                 method: 'POST',
                 data: formData
             }).then((result) => {
@@ -107,7 +107,7 @@ export default function App() {
  
   async function updateSayPhrase() {
     await axios({ 
-      url: `${env.BACKEND_URL_HOST}/say-phrase`,
+      url: `${env.BACKEND_URL_HOST}/${env.BACKEND_PHRASE}`,
       method: 'GET'
     }).then((result) => {
         console.log(result);
