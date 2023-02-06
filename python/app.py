@@ -1,13 +1,27 @@
-from flask import Flask
+from flask import Flask, request, jsonify
+from flask_cors import CORS
+from werkzeug.utils import secure_filename
 import whisper
+import uuid
 import os
+ 
 app = Flask(__name__)
+CORS(app)
 
-@app.route("/media_transcription")
-def english_transcription():
-    audio_path = os.path.join(os.path.dirname(__file__), "media", "jfk.flac")
-    whole_transcription = transcription("base", audio_path)  
-    return whole_transcription 
+@app.route('/media-transcription ', methods = ['POST']) 
+def whole_transcription():
+    if request.method == 'POST': 
+        target = os.path.join(os.path.dirname(__file__), "media")
+        if not os.path.isdir(target):
+            os.mkdir(target) 
+        file = request.files['file']
+        file.filename.split(".")[-1]
+        filename = secure_filename("".join([str(uuid.uuid4()), ".",file.filename.split(".")[-1]])) 
+        audio_path = os.path.join(os.path.dirname(__file__), "media", filename)
+        file.save(audio_path)  
+        whole_transcription = transcription("base", audio_path) 
+        os.remove(audio_path)
+        return jsonify({"transcription" : whole_transcription})  
 
 def transcription(model_name: str, audio_path: str):
     model = whisper.load_model(model_name)
