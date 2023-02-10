@@ -1,0 +1,11 @@
+article{ 
+    margin: auto; 
+    min-height: calc(100vh - 50px - 33.8px - 5em);
+    margin: auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center; 
+    padding-top: calc(5em);
+    padding-bottom: calc(5em);
+}

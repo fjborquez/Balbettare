@@ -22,6 +22,7 @@ export default function App() {
 
   const [transcription, setTranscription] = useState({ 
     available: false,
+    analyzing: false,
     data: ""
   }); 
 
@@ -71,6 +72,12 @@ export default function App() {
             const formData = new FormData(); 
             formData.append("audio", blob); 
             
+            setTranscription({ 
+              available: true,
+              analyzing: true,
+              data: ""
+            })
+
             await axios({ 
                 url: `${env.PYTHON_URL_HOST}/${env.PYTHON_MEDIA_TRANSCRIPTIOM}`,
                 method: 'POST',
@@ -79,9 +86,15 @@ export default function App() {
                 console.log(result);
                 setTranscription({ 
                   available: true,
-                  data: result.data.transcription
+                  analyzing: false,
+                  data: result.data
                 })
             }).catch((error) => {
+                setTranscription({ 
+                  available: true,
+                  analyzing: false,
+                  data: ""
+                })
                 console.log(error);
             });
 
@@ -103,7 +116,6 @@ export default function App() {
         setStream({ ...stream, error });
       });
   } 
-
  
   async function updateSayPhrase() {
     await axios({ 
@@ -125,35 +137,38 @@ export default function App() {
   function cleanTranscription() { 
     setTranscription({ 
       available: false,
+      analyzing: false,
       data: ""
     });
-  }
+  }  
 
   return (
-    <div className="App"> 
+    <article> 
       {stream.access ? (
           <section className="audio-container">   
             <section>
-              {!recording.active ?  
-                <input type={"button"} 
+              {!recording.active && !transcription.analyzing
+              ? <input type={"button"} 
                   onClick={() => !recording.active && stream.recorder.start()}  
                   value="Start Recording" /> 
-              : 
-                <input type={"button"} 
+              : recording.active && !transcription.analyzing
+              ? <input type={"button"} 
                   onClick={() => stream.recorder.stop()}  
                   value="Stop Recording" />
+              : <p>analyzing</p>
+
               }
 
-              <p>{phrase.sayPhrase}</p>
+              <p>Phrase: {phrase.sayPhrase}</p>
             </section> 
              
             
             {
-                transcription.available  
+                (transcription.available && !transcription.analyzing)
                 &&  
                 <section>
                   <p>
-                    {transcription.data}
+                    Transcript: {transcription.data}
                   </p>
                   <input 
                     type={"button"}
@@ -169,6 +184,6 @@ export default function App() {
             onClick={getAccess} 
             value="Get Mic Access" />
         )}
-    </div>
+    </article>
   );
 } 

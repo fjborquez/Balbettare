@@ -1,17 +1,28 @@
 *{
   margin: 0;
   padding: 0;
+  box-sizing: border-box;
 }
 
 body{
-	font-family: "Pakonsy_Font", Arial, Helvetica, sans-serif;
+	font-family: "Inter", Arial, Helvetica, sans-serif;
   line-height: 1.4;
   letter-spacing: 0.5px;
-  font-size: 12px;
+  font-size: 12px; 
+  padding: 2.5em;
+  background: #FFFCF5;
+  color: #191919;
 }
 
-article{
-  min-height: calc(100vh - ((1.25rem * 2) + 20px))
+@media (max-width: 30em) { 
+  body{
+    padding: 1em;
+  }
+}  
+
+@font-face {
+  font-family: Inter;
+  src: url(https://fonts.googleapis.com/css?family=Inter);
 }
 
 h1 {
@@ -44,7 +55,17 @@ a  {
 img{
   height: auto;
   display: block;
+  margin-left: auto;
+  margin-right: auto;
 }
+
+
+@media (max-width: 30em) { 
+  img{
+    width: 100%;
+  } 
+}  
+
 
 picture img, video {
   width: 100%;
