@@ -10,8 +10,6 @@ COPY . .
 RUN pip install --upgrade pip  
 RUN pip install -r requirements.txt 
 
-EXPOSE 4010 
-
 ENTRYPOINT ["python"]
 
 CMD ["app.py"]

@@ -25,7 +25,7 @@ services:
   python: 
     build: python/.
     ports:
-      - "4010:4010"
+      - "4010:5000"
       
 volumes: 
   db-data:

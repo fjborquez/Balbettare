@@ -69,7 +69,7 @@ export default function App() {
             const url = URL.createObjectURL(blob);  
 
             const formData = new FormData(); 
-            formData.append("file", blob); 
+            formData.append("audio", blob); 
             
             await axios({ 
                 url: `${env.PYTHON_URL_HOST}/${env.PYTHON_MEDIA_TRANSCRIPTIOM}`,
