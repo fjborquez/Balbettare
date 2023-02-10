@@ -1,0 +1,6 @@
+flask==2.2.2
+flask-cors==3.0.10
+werkzeug==2.2.2
+uuid==1.30
+torchvision==0.14.1
+git+https://github.com/openai/whisper.git
