@@ -21,6 +21,7 @@ def transcription():
         wav_file.save(save_path)
         result = audio_model.transcribe(save_path, language='italian')
 
+        os.remove(save_path)  
         return result['text'] 
 
 if __name__ == "__main__":
