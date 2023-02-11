@@ -16,7 +16,7 @@ services:
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
-      POSTGRES_DB: speech_recognition
+      POSTGRES_DB: balbettare
     ports:
       - "5432:5432" 
     volumes:
