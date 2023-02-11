@@ -2,6 +2,8 @@
 
 Learn a language through speech by haveing a say phrase get given to be repeted repeat trough speech.
 
+Support:
+- Italian (2 Pharases)
 ```
 docker-compose up   
 ```
