@@ -1,6 +1,6 @@
-# Learn A Language Through Speech
+# 🗣 Balbettare
 
-The aim of this project is simple, Give a phrase to a user and have them repeat it in audio form, where the user chooses the language to improve their pronunciation skills.
+Learn a language through speech by haveing a say phrase get given to be repeted repeat trough speech.
 
 ```
 docker-compose up   
