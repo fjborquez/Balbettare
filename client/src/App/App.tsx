@@ -143,47 +143,47 @@ export default function App() {
   }  
 
   return (
-    <article> 
+    <article>  
       {stream.access ? (
-          <section className="audio-container">   
-            <section>
-              {!recording.active && !transcription.analyzing
-              ? <input type={"button"} 
-                  onClick={() => !recording.active && stream.recorder.start()}  
-                  value="Start Recording" /> 
-              : recording.active && !transcription.analyzing
-              ? <input type={"button"} 
-                  onClick={() => stream.recorder.stop()}  
-                  value="Stop Recording" />
-              : <p>analyzing</p>
+        <section className="say-phrase-wrapper">
+          <section className="say-phrase-container">
+            {!recording.active && !transcription.analyzing
+            ? <input type={"button"} 
+                onClick={() => !recording.active && stream.recorder.start()}  
+                value="Start Recording" /> 
+            : recording.active && !transcription.analyzing
+            ? <input type={"button"} 
+                onClick={() => stream.recorder.stop()}  
+                value="Stop Recording" />
+            : <p>analyzing</p>
 
-              }
+            }
 
-              <p>Phrase: {phrase.sayPhrase}</p>
-            </section> 
-             
-            
+            <p>Phrase: {phrase.sayPhrase}</p>
+
             {
-                (transcription.available && !transcription.analyzing)
-                &&  
-                <section>
-                  <p>
-                    Transcript: {transcription.data}
-                  </p>
-                  <input 
-                    type={"button"}
-                    onClick={updateSayPhrase} 
-                    value="Next"
-                  />
-                </section>
-              } 
-
-          </section> 
-        ) : (
+              (transcription.available && !transcription.analyzing)
+              &&  
+              <section>
+                <p>
+                  Transcript: {transcription.data}
+                </p>
+                <input 
+                  type={"button"}
+                  onClick={updateSayPhrase} 
+                  value="Next"
+                />
+              </section>
+            }  
+          </section>  
+        </section> 
+      ) : (
+        <section className="say-phrase-wrapper">
           <input type={"button"} 
             onClick={getAccess} 
-            value="Get Mic Access" />
-        )}
+            value="Get Mic Access" /> 
+        </section>
+      )}  
     </article>
   );
 } 

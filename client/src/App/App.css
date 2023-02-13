@@ -9,3 +9,13 @@ article{
     padding-top: calc(5em);
     padding-bottom: calc(5em);
 }
+
+.say-phrase-wrapper{
+    background: white;
+    padding: 20em;
+}
+
+.say-phrase-container{
+    display: grid;
+    justify-content: center;
+}
