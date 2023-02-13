@@ -3,11 +3,7 @@ import env from '../env.json';
 import axios from 'axios';
 import './App.css';
 
-export default function App() {  
-  useEffect(() => {
-      document.title = "Speech Recognition";
-  });
-
+export default function App() {   
   const [stream, setStream] = useState({
     access: false,
     recorder: null,
@@ -31,22 +27,21 @@ export default function App() {
     sayPhrase: "",
     translatedPhrase: ""
   }); 
-  
-  const chunks = useRef([]);
 
-  function getAccess() {
+  const chunks = useRef([]); 
+  useEffect(() => {
+    document.title = "Speech Recognition";  
+    getNewSayPhrase();
     navigator.mediaDevices
       .getUserMedia({ audio: true })
-      .then(async (mic) => {
-        let  mediaRecorder = new MediaRecorder(mic, {
+      .then((mic) => {
+        let mediaRecorder = new MediaRecorder(mic, {
             mimeType: "audio/webm"
         });
-
-        await updateSayPhrase()
-
+        
         const track = mediaRecorder.stream.getTracks()[0];
         track.onended = () => console.log("ended");
-
+    
         mediaRecorder.onstart = function () {
           setRecording({
             active: true,
@@ -55,20 +50,18 @@ export default function App() {
           });
           cleanTranscription();
         };
-
+    
         mediaRecorder.ondataavailable = function (e) {
           console.log("data available");
           chunks.current.push(e.data);
         };
-
-        mediaRecorder.onstop = async function () {
-          console.log("stopped"); 
-          
+    
+        mediaRecorder.onstop = async function () { 
             let blob = new Blob(chunks.current, { type : chunks.current[0] });
             chunks.current = [];
-
+    
             const url = URL.createObjectURL(blob);  
-
+    
             const formData = new FormData(); 
             formData.append("audio", blob); 
             
@@ -77,7 +70,7 @@ export default function App() {
               analyzing: true,
               data: ""
             })
-
+    
             await axios({ 
                 url: `${env.PYTHON_URL_HOST}/${env.PYTHON_MEDIA_TRANSCRIPTIOM}`,
                 method: 'POST',
@@ -97,14 +90,14 @@ export default function App() {
                 })
                 console.log(error);
             });
-
+    
           setRecording({
             active: false,
             available: true,
             url
           });
         };
-
+    
         setStream({
           ...stream,
           access: true,
@@ -114,10 +107,10 @@ export default function App() {
       .catch((error) => {
         console.log(error);
         setStream({ ...stream, error });
-      });
-  } 
- 
-  async function updateSayPhrase() {
+      }); 
+  }, []);
+  
+  async function getNewSayPhrase() {
     await axios({ 
       url: `${env.BACKEND_URL_HOST}/${env.BACKEND_PHRASE}`,
       method: 'GET'
@@ -181,48 +174,41 @@ export default function App() {
 
   return (
     <article>  
-      {stream.access ? (
-        <section className="say-phrase-wrapper">
-          <section className="say-phrase-container">
-            {!recording.active && !transcription.analyzing
-            ? <input type={"button"} 
-                onClick={() => !recording.active && stream.recorder.start()}  
-                value="Start Recording" /> 
-            : recording.active && !transcription.analyzing
-            ? <input type={"button"} 
-                onClick={() => stream.recorder.stop()}  
-                value="Stop Recording" />
-            : <p>analyzing</p>
+      <section className="say-phrase-wrapper">
+        <section className="say-phrase-container">
+          {
+            !recording.active && !transcription.analyzing
+              ? <input type={"button"} 
+                  onClick={ () => !recording.active && stream.recorder.start()}  
+                  value="Start Recording" /> 
+              : recording.active && !transcription.analyzing
+                ? <input type={"button"} 
+                    onClick={() => stream.recorder.stop()}  
+                    value="Stop Recording" />
+                : <p>analyzing</p> 
+          }
 
-            }
+          <p>Phrase: {phrase.sayPhrase}</p>
 
-            <p>Phrase: {phrase.sayPhrase}</p>
- 
-            {
-              (transcription.available && !transcription.analyzing)
-              &&  
-              <section>
-                <p>
-                  Transcript: {transcription.data}
-                </p>
-                {clean_phrase(phrase.sayPhrase, transcription.data) ? 
-                  <input 
-                    type={"button"}
-                    onClick={updateSayPhrase} 
-                    value="Next"
-                  />
-                : undefined}
-              </section>
-            }  
-          </section>  
-        </section> 
-      ) : (
-        <section className="say-phrase-wrapper">
-          <input type={"button"} 
-            onClick={getAccess} 
-            value="Get Mic Access" /> 
-        </section>
-      )}  
+          {
+            (transcription.available && !transcription.analyzing)
+            && 
+            <section>
+              <p>Transcript: {transcription.data}</p>
+              { 
+                clean_phrase(phrase.sayPhrase, transcription.data) 
+                ? <input 
+                  style={clean_phrase(phrase.sayPhrase, transcription.data) ? {visibility : "visible"} : {visibility : "hidden"}}
+                  type={"button"}
+                  onClick={getNewSayPhrase} 
+                  value="Next"
+                />
+                : undefined
+              }
+            </section>  
+          } 
+        </section>  
+      </section> 
     </article>
   );
 } 
