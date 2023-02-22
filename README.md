@@ -1,4 +1,4 @@
-# 🗣 Balbettare (Under Construction)
+# 🗣 Balbettare
 
 Immerse in a thrilling language journey as you speak your way to fluency, repeating dynamic phrases handpicked just for you.
 
