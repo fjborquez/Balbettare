@@ -18,6 +18,7 @@ article{
 .start-record-button,
 .stop-record-button {
     all: unset;
+    cursor: pointer;
     display: inline-flex;
     align-items: center;
     gap: 6px;
@@ -32,6 +33,7 @@ article{
 
 .next-button {
     all: unset;
+    cursor: pointer;
     display: inline-flex;
     align-items: center;
     gap: 6px;
