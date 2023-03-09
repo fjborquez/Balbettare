@@ -10,13 +10,35 @@ article{
     padding-bottom: calc(5em);
 }
 
-.say-phrase-wrapper{
-    background: white;
-    width: 100%;
-    padding: 20em;
-}
-
 .say-phrase-container{
     display: grid;
     justify-content: center;
+}
+
+.start-record-button,
+.stop-record-button {
+    all: unset;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    height: 60px;
+    padding: 0 6px;
+    text-align: center;
+    justify-content: center;
+    border-radius: 4px;
+    border: 0.2em solid #4e4e4e;
+    background-color: rgb(0 0 0 / 20%);
+}
+
+.next-button {
+    all: unset;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 0 6px;
+    text-align: center;
+    justify-content: center;
+    border-radius: 4px;
+    border: 0.2em solid #563900;
+    background-color: #ffa800;
 }

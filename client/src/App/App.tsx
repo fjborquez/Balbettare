@@ -6,7 +6,7 @@ import './App.css';
 export default function App() {   
   const [stream, setStream] = useState({
     access: false,
-    recorder: null,
+    recorder: null as any,
     error: ""
   });
 
@@ -28,7 +28,7 @@ export default function App() {
     translatedPhrase: ""
   }); 
 
-  const chunks = useRef([]); 
+  const chunks = useRef([] as any); 
   useEffect(() => {
     document.title = "Speech Recognition";  
     getNewSayPhrase();
@@ -174,41 +174,42 @@ export default function App() {
 
   return (
     <article>  
-      <section className="say-phrase-wrapper">
-        <section className="say-phrase-container">
-          {
-            !recording.active && !transcription.analyzing
+      <section className="say-phrase-container">
+        {
+          !recording.active && !transcription.analyzing
+            ? <input type={"button"} 
+                className="start-record-button"
+                onClick={ () => !recording.active && stream.recorder.start()}  
+                value="Start Recording" /> 
+            : recording.active && !transcription.analyzing
               ? <input type={"button"} 
-                  onClick={ () => !recording.active && stream.recorder.start()}  
-                  value="Start Recording" /> 
-              : recording.active && !transcription.analyzing
-                ? <input type={"button"} 
-                    onClick={() => stream.recorder.stop()}  
-                    value="Stop Recording" />
-                : <p>analyzing</p> 
-          }
+                  className="stop-record-button"
+                  onClick={() => stream.recorder.stop()}  
+                  value="Stop Recording" />
+              : <p>analyzing</p> 
+        }
 
-          <p>Phrase: {phrase.sayPhrase}</p>
+        <p>Phrase: {phrase.sayPhrase}</p>
 
-          {
-            (transcription.available && !transcription.analyzing)
-            && 
-            <section>
-              <p>Transcript: {transcription.data}</p>
-              { 
-                clean_phrase(phrase.sayPhrase, transcription.data) 
-                ? <input 
-                  style={clean_phrase(phrase.sayPhrase, transcription.data) ? {visibility : "visible"} : {visibility : "hidden"}}
-                  type={"button"}
-                  onClick={getNewSayPhrase} 
-                  value="Next"
-                />
-                : undefined
-              }
-            </section>  
-          } 
-        </section>  
-      </section> 
+        {
+          (transcription.available && !transcription.analyzing)
+          && 
+          <>
+            <p>Transcript: {transcription.data}</p>
+            { 
+              clean_phrase(phrase.sayPhrase, transcription.data) 
+              ? <input 
+                className="next-button"
+                style={clean_phrase(phrase.sayPhrase, transcription.data) ? {visibility : "visible"} : {visibility : "hidden"}}
+                type={"button"}
+                onClick={getNewSayPhrase} 
+                value="Next"
+              />
+              : undefined
+            }
+          </>
+        } 
+      </section>  
     </article>
   );
 } 
