@@ -1,6 +1,6 @@
 # 🗣 Balbettare
 
-<img src="https://user-images.githubusercontent.com/29023819/227253702-75b1582a-994c-4973-a28b-39948bacd0cd.gif" width=100% height=100%  title="Balbettare">
+<img src="https://user-images.githubusercontent.com/29023819/227253702-75b1582a-994c-4973-a28b-39948bacd0cd.gif" width=100% title="Balbettare">
 
 
 [**`Our Favorite Features`**](#our-favorite-features)
