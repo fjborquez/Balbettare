@@ -1,6 +1,7 @@
 # 🗣 Balbettare
 
-![Balbettare](https://user-images.githubusercontent.com/29023819/204177122-71ad3eb7-6aad-434b-ac78-f75a4534e71e.png)
+<img src="https://user-images.githubusercontent.com/29023819/227253702-75b1582a-994c-4973-a28b-39948bacd0cd.gif" width=100% height=100%  title="Balbettare">
+
 
 [**`Our Favorite Features`**](#our-favorite-features)
 [**`Supported Languages`**](#supported-languages)
