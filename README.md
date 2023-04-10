@@ -18,7 +18,7 @@
 
 ### Supported Languages 
 
-🇮🇹 Italian (7 Pharases)
+🇮🇹 Italian (7 Pharases) \
 🇪🇸 Spanish (7 Pharases)
 
 
