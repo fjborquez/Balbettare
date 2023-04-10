@@ -1,3 +1,4 @@
+"use strict";
 require("dotenv").config();
 const {Client, Pool} = require("pg");
 

@@ -1,3 +1,4 @@
+"use strict";
 const { client } = require("./dbConfig");
 const FileSystem = require("fs");
 
