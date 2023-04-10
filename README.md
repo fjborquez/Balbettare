@@ -18,7 +18,9 @@
 
 ### Supported Languages 
 
-🇮🇹 Italian (2 Pharases)
+🇮🇹 Italian (7 Pharases)
+🇪🇸 Spanish (7 Pharases)
+
 
 ## Installation
 
