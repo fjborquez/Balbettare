@@ -156,7 +156,7 @@ export default function App() {
     let longer = (s1.length < s2.length) ? s2 : s1;
     let shorter = (s1.length < s2.length) ? s1 : s2; 
     const longerLength = (longer.length === 0) ? 1.0 : longer.length; 
-    return(longerLength - editDistance(longer, shorter)) / parseFloat(longerLength);
+    return(longerLength - editDistance(longer as any, shorter as any)) / parseFloat(longerLength as any);
   }
 
   function editDistance(s1: string, s2: string ) { 
