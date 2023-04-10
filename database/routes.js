@@ -8,7 +8,7 @@ require("dotenv").config();
 const app = express(); 
 app.use(cors())
 
-app.get("/italianPhrase", languagePhrase);
+app.get("/languagePhrase", languagePhrase);
 
 app.get("*", function(req, res){
     res.status(404).redirect("/");

@@ -18,8 +18,9 @@ def transcription():
         save_path = os.path.join(temp_dir, 'temp.wav')
 
         wav_file = request.files['audio']
+        language = request.form.get('language')
         wav_file.save(save_path)
-        result = audio_model.transcribe(save_path, language='italian')
+        result = audio_model.transcribe(save_path, language=language.lower())
 
         os.remove(save_path)  
         return result['text'] 

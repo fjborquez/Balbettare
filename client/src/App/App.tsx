@@ -1,4 +1,5 @@
 import React, { useEffect, useState, useRef } from 'react';
+import LanguageSelection from './LanguageSelection';
 import env from '../env.json';
 import axios from 'axios';
 import './App.css';
@@ -28,10 +29,20 @@ export default function App() {
     translatedPhrase: ""
   }); 
 
+  const [language, setLanguage] = useState<string | null>(null);
+
+  const handleLanguageChange = (language: string) => {
+    setLanguage(language);
+    initializeRecorder(language);
+    getNewSayPhrase(language);
+  };
+
   const chunks = useRef([] as any); 
   useEffect(() => {
     document.title = "Speech Recognition";  
-    getNewSayPhrase();
+  }, []);
+  
+  async function initializeRecorder(language: string) {
     navigator.mediaDevices
       .getUserMedia({ audio: true })
       .then((mic) => {
@@ -52,7 +63,6 @@ export default function App() {
         };
     
         mediaRecorder.ondataavailable = function (e) {
-          console.log("data available");
           chunks.current.push(e.data);
         };
     
@@ -63,32 +73,32 @@ export default function App() {
             const url = URL.createObjectURL(blob);  
     
             const formData = new FormData(); 
-            formData.append("audio", blob); 
+            formData.append("audio", blob as Blob); 
+            formData.append("language", language as string);
             
             setTranscription({ 
               available: true,
               analyzing: true,
               data: ""
             })
-    
+            
             await axios({ 
                 url: `${env.PYTHON_URL_HOST}/${env.PYTHON_MEDIA_TRANSCRIPTIOM}`,
                 method: 'POST',
                 data: formData
             }).then((result) => {
-                console.log(result);
                 setTranscription({ 
                   available: true,
                   analyzing: false,
                   data: result.data
                 })
             }).catch((error) => {
+                console.error(error);
                 setTranscription({ 
                   available: true,
                   analyzing: false,
                   data: ""
-                })
-                console.log(error);
+                });
             });
     
           setRecording({
@@ -105,24 +115,25 @@ export default function App() {
         });
       })
       .catch((error) => {
-        console.log(error);
+        console.error(error);
         setStream({ ...stream, error });
       }); 
-  }, []);
-  
-  async function getNewSayPhrase() {
+  }
+  async function getNewSayPhrase(language: string) {
     await axios({ 
       url: `${env.BACKEND_URL_HOST}/${env.BACKEND_PHRASE}`,
-      method: 'GET'
+      method: 'GET',
+      params: {
+        language: language,
+      },
     }).then((result) => {
-        console.log(result);
         setPhrase({ 
           available: true,
           sayPhrase: result.data.phrase,
           translatedPhrase: result.data.transplatedPhrase
         })
     }).catch((error) => {
-        console.log(error);
+        console.error(error);
     });
     cleanTranscription();
   }
@@ -173,43 +184,47 @@ export default function App() {
   }
 
   return (
-    <article>  
-      <section className="say-phrase-container">
-        {
-          !recording.active && !transcription.analyzing
-            ? <input type={"button"} 
-                className="start-record-button"
-                onClick={ () => !recording.active && stream.recorder.start()}  
-                value="Start Recording" /> 
-            : recording.active && !transcription.analyzing
+    <article> 
+      {language === null ? (
+         <LanguageSelection onSelect={handleLanguageChange} />
+      ) : ( 
+        <section className="say-phrase-container">
+          {
+            !recording.active && !transcription.analyzing
               ? <input type={"button"} 
-                  className="stop-record-button"
-                  onClick={() => stream.recorder.stop()}  
-                  value="Stop Recording" />
-              : <p>analyzing</p> 
-        }
+                  className="start-record-button"
+                  onClick={ () => !recording.active && stream.recorder.start()}  
+                  value="Start Recording" /> 
+              : recording.active && !transcription.analyzing
+                ? <input type={"button"} 
+                    className="stop-record-button"
+                    onClick={() => stream.recorder.stop()}  
+                    value="Stop Recording" />
+                : <p>analyzing</p> 
+          }
 
-        <p>Phrase: {phrase.sayPhrase}</p>
+          <p>Phrase: {phrase.sayPhrase}</p>
 
-        {
-          (transcription.available && !transcription.analyzing)
-          && 
-          <>
-            <p>Transcript: {transcription.data}</p>
-            { 
-              clean_phrase(phrase.sayPhrase, transcription.data) 
-              ? <input 
-                className="next-button"
-                style={clean_phrase(phrase.sayPhrase, transcription.data) ? {visibility : "visible"} : {visibility : "hidden"}}
-                type={"button"}
-                onClick={getNewSayPhrase} 
-                value="Next"
-              />
-              : undefined
-            }
-          </>
-        } 
-      </section>  
+          {
+            (transcription.available && !transcription.analyzing)
+            && 
+            <>
+              <p>Transcript: {transcription.data}</p>
+              { 
+                clean_phrase(phrase.sayPhrase, transcription.data) 
+                ? <input 
+                  className="next-button"
+                  style={clean_phrase(phrase.sayPhrase, transcription.data) ? {visibility : "visible"} : {visibility : "hidden"}}
+                  type={"button"}
+                  onClick={() => getNewSayPhrase(language)} 
+                  value="Next"
+                />
+                : undefined
+              }
+            </>
+          } 
+        </section>   
+      )}
     </article>
   );
 } 
