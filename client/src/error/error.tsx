@@ -7,9 +7,10 @@ export default function Error() {
     });
     return (
         <article className="error-article">
-            <p className="error-text">
-                Page not found
+            <p className="error-title">
+                404 / PAGE NOT FOUND
             </p>
+            <a className="error-button" href="/">Go back to home</a>
         </article>
     )
 }
