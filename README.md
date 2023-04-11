@@ -2,19 +2,20 @@
 
 <img src="https://user-images.githubusercontent.com/29023819/227253702-75b1582a-994c-4973-a28b-39948bacd0cd.gif" width=100% title="Balbettare">
 
-
 [**`Our Favorite Features`**](#our-favorite-features)
 [**`Supported Languages`**](#supported-languages)
 [**`Installation`**](#installation)
 [**`Contribute`**](#contribute)
 [**`License`**](#license)
 
-**Immerse in a thrilling language journey with Balbettare** with dynamic phrases specially selected for you, and watch your fluency soar. 
+Hello! I'm a language enthusiast passionate about helping others reach their full potential in language learning. My Balbettare project combines my love for learning with my expertise in creating effective and engaging tools for exploring different language learning techniques.
+
+Balbettare is designed to help you immerse yourself in a thrilling language journey with dynamic phrases specially selected to enhance your learning experience. Watch your fluency soar as you practice and perfect your language skills with our unique features, even if you haven't yet mastered any language.
 
 ### Our Favorite Features
 
 **🗣 Say Phrase** \
-**Repeat the given phrase exactly as presented**, to strengthen your language proficiency and boost your ability to remember.
+**Strengthen your** language proficiency and boost your ability to remember by repeating the given phrase exactly as presented.
 
 ### Supported Languages 
 
