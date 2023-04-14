@@ -15,7 +15,7 @@ async function fetchPhrase(language) {
     });
     // Connect to the database
     client.connect();
-    // Query the database for all Italian phrases
+    // Query the database for selected language phrases
     const data = await client.query(`SELECT * FROM ${language}_Phrases`);
     // Cache the results in the LanguageData variable
     LanguageData[language] = {
@@ -26,7 +26,7 @@ async function fetchPhrase(language) {
     await client.end();
 }
 
-// Fetch a phrase from the database (Currently only supports Italian)
+// Fetch a phrase from the database for the specified language
 async function languagePhrase(req, res) {  
     try {
         // Get the language from the query string
